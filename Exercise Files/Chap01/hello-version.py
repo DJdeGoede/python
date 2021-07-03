@@ -3,4 +3,4 @@
 
 import platform
 
-print('This is python version {} by Dick de Goede'.format(platform.python_version()))
+print('This is python version {}'.format(platform.python_version()))
