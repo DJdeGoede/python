@@ -3,4 +3,5 @@
 
 import platform
 
-print('This is python version {}'.format(platform.python_version()))
+print('This is python version {}'.format(platform.python_version()))    # python 3
+print('This is python version %s' % platform.python_version())          # python 2
