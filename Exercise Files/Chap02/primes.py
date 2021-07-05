@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
 # Copyright 2009-2017 BHG http://bw.org/
 
+def main():
+    n = 100
+    
+    if isprime(n):
+        print(f'{n} is prime')
+    else:
+        print(f'{n} is not prime')
+    
+    list_primes(n)
+
 def isprime(n):
     if n <= 1:
         return False
@@ -10,9 +20,13 @@ def isprime(n):
     else:
         return True
 
-n = 5
-if isprime(n):
-    print(f'{n} is prime')
-else:
-    print(f'{n} not prime')
+def list_primes(i):
+    print(f'Primes up to {i}:', end=' ')
+    for n in range(i+1):
+        if isprime(n):
+            print(n, end=' ', flush=True)
+
+if __name__ == '__main__': main()
+
+
 

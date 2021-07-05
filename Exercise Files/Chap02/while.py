@@ -7,3 +7,7 @@ n = 0
 while(n < 5):
     print(words[n])
     n += 1
+
+# Easier (see for.py)
+for i in words:
+    print(i)
