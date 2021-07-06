@@ -2,7 +2,7 @@
 # Copyright 2009-2017 BHG http://bw.org/
 
 def main():
-    n = 100
+    n = 50
     
     if isprime(n):
         print(f'{n} is prime')
@@ -24,8 +24,9 @@ def list_primes(i):
     print(f'Primes up to {i}:', end=' ')
     for n in range(i+1):
         if isprime(n):
-            print(n, end=' ', flush=True)
-
+            print(n, end=',', flush=True)
+    print ('\b ')     # BS to set cursor before last , and then overwrite with a space
+    
 if __name__ == '__main__': main()
 
 
