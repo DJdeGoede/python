@@ -3,6 +3,15 @@
 
 secret = 'swordfish'
 pw = ''
+auth = False
+count = 0
+max_attempt = 5
 
 while pw != secret:
-    pw = input("What's the secret word? ")
+    count += 1
+    if count > max_attempt: break
+    pw = input(f"{count}: What's the secret word? ") 
+else:
+    auth = True
+
+print("\nGood morning Commander.") if auth else print("\nYou'll never get in! Woehahahaha")
