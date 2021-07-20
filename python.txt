@@ -1,0 +1,38 @@
+
+ ______                _                   
+(_____ \         _    | |                  
+ _____) ) _   _ | |_  | | _    ___   ____  
+|  ____/ | | | ||  _) | || \  / _ \ |  _ \ 
+| |      | |_| || |__ | | | || |_| || | | |
+|_|       \__  | \___)|_| |_| \___/ |_| |_|
+         (____/                            
+-------------------------------------------
+P R O G R A M M I N G   I N   P Y T H O N
+-------------------------------------------
+>>> : command to type,  > : result
+examples can be run in Idle
+-------------------------------------------
+
+Step 1: Representing records
+----------------------------
+Using lists
+-----------
+    Lists, for example, can collect attributes about people in a positionally ordered way.
+
+    Create two lists:
+    >>> bob = ['Bob Smith', 42, 30000, 'software']
+    >>> sue = ['Sue Jones', 45, 40000, 'hardware']
+
+    Query the lists:
+    >>> bob         > ['Bob Smith', 42, 30000, 'software']
+    >>> sue         > ['Sue Jones', 45, 40000, 'hardware']
+    >>> bob, sue    > (['Bob Smith', 42, 30000, 'software'], ['Sue Jones', 45, 50000.0, 'hardware'])
+
+    To access these fields, we simply index by position; the result is in parentheses here because it is a tuple of two results:
+    
+    >>> bob[0], sue[2]      # fetch name, pay           > ('Bob Smith', 40000)
+    >>> bob[0].split()[1]   # last name only            > 'Smith'
+    >>> sue[2] *1.25        # give Sue a 25% raise
+    >>> sue                                             > ['Sue Jones', 45, 50000, 'hardware']   # 40000 to 50000
+
+
