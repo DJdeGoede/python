@@ -14,25 +14,187 @@ examples can be run in Idle
 -------------------------------------------
 
 Step 1: Representing records
-----------------------------
+============================
 Using lists
 -----------
-    Lists, for example, can collect attributes about people in a positionally ordered way.
+Lists, for example, can collect attributes about people in a positionally ordered way.
 
-    Create two lists:
-    >>> bob = ['Bob Smith', 42, 30000, 'software']
-    >>> sue = ['Sue Jones', 45, 40000, 'hardware']
+Create two lists:
+>>> bob = ['Bob Smith', 42, 30000, 'software']
+>>> sue = ['Sue Jones', 45, 40000, 'hardware']
 
-    Query the lists:
-    >>> bob         > ['Bob Smith', 42, 30000, 'software']
-    >>> sue         > ['Sue Jones', 45, 40000, 'hardware']
-    >>> bob, sue    > (['Bob Smith', 42, 30000, 'software'], ['Sue Jones', 45, 50000.0, 'hardware'])
+Query the lists:
+>>> bob         > ['Bob Smith', 42, 30000, 'software']
+>>> sue         > ['Sue Jones', 45, 40000, 'hardware']
+>>> bob, sue    > (['Bob Smith', 42, 30000, 'software'], ['Sue Jones', 45, 50000.0, 'hardware'])
 
-    To access these fields, we simply index by position; the result is in parentheses here because it is a tuple of two results:
-    
-    >>> bob[0], sue[2]      # fetch name, pay           > ('Bob Smith', 40000)
-    >>> bob[0].split()[1]   # last name only            > 'Smith'
-    >>> sue[2] *1.25        # give Sue a 25% raise
-    >>> sue                                             > ['Sue Jones', 45, 50000, 'hardware']   # 40000 to 50000
+To access these fields, we simply index by position; the result is in parentheses here because it is a tuple of two results:
+
+>>> bob[0], sue[2]      # fetch name, pay           > ('Bob Smith', 40000)
+>>> bob[0].split()[1]   # last name only            > 'Smith'
+>>> sue[2] *1.25        # give Sue a 25% raise
+>>> sue                                             > ['Sue Jones', 45, 50000, 'hardware']   # 40000 to 50000
+
+* A database list
+to collect Bob and Sue into a unit, we might simply stuff them into another list.
+Now the people list represents our database. We can fetch specific records by their relative positions and 
+process them one at a time, in loops.
+
+>>> people = [bob, sue]
+>>> for person in people: 
+        print (person)                              > ['Bob Smith', 42, 30000, 'software']
+                                                      ['Sue Jones', 45, 40000, 'hardware']
+
+>>> people[1][0]                                    > 'Sue Jones'
+>>> for person in people: 
+        print(person[0].split()[1])
+        person[2] *= 1.20                           > Smith
+                                                      Jones
+
+>>> for person in people: print(person[2])          > 36000.0
+                                                      60000.0
+
+Now that we have a list, we can also collect values from records using some of Python’s more powerful iteration tools, 
+such as list comprehensions, maps, and generator expressions.
+
+>>> pays = [person[2] for person in people]
+>>> pays                                            > [36000.0, 60000.0]
+            or
+>>> pays = map((lambda x: x[2]), people)
+>>> list(pays)                                      > [36000.0, 60000.0]
+
+>>> sum(person[2] for person in people)             > 96000.0
+
+To add a record to the "database", the usual list of operations, such as append and extend, will suffice:
+
+>>> people.append(['Tom Duke', 50, 0 , None])
+>>> len(people)                                     > 3
+>>> people[-1][0]   # last added                    > 'Tom'
+
+Flaws for this "database":
+- no permanent storage (only in memory)
+- repeat and many code needed to update
+
+* Field labels
+You can assign a label to create some kind of field names:
+
+>>> NAME, AGE, PAY = range(3)    # alias NAME=0, AGE=1 and PAY=2
+>>> bob[NAME]          # same as bob[0]             > 'Bob Smith'
+
+Disadvantage: 
+- you have to redefine the range statement after a structure update
+- no mapping back from a record list to it field names
+
+Using dictionaries
+------------------
+More efficient than list-based record representations are dictionaries:
+
+>>> bob = {'name': 'Bob Smith', 'age': 42, 'pay': 30000, 'job': 'dev'}
+>>> sue = {'name': 'Sue Jones', 'age': 45, 'pay': 40000, 'job': 'hdw'}
+
+>>> bob['name'], sue['pay']                         > ('Bob Smith', 40000)
+>>> bob['name'].split()[1]                          > 'Smith'
+>>> sue['pay'] *= 1.10; sue['pay']                  > 44000.0
+
+Other way to create dictionaries:
+
+>>> bob = dict(name='Bob Smith', age=42, pay=30000, job='dev')
+>>> sue = dict(name='Sue Jones', age=45, pay=40000, job='hdw')
+>>> people = [bob,sue]
+>>> for person in people: 
+        print(person['name'], person['pay'], sep=', ')  >   Bob Smith, 30000
+                                                            Sue Jones, 40000
+
+>>> for person in people: 
+        if person['name'] == 'Sue Jones':
+            print(person['name'], person['pay'])        >   Sue Jones, 40000                                                            
+
+>>> names = [person['name'] for person in people]
+>>> names                                               > ['Bob Smith', 'Sue Jones']
+            or
+>>> list(map((lambda x: x['name']), people))            > ['Bob Smith', 'Sue Jones']
+
+>>> sum(person['pay'] for person in people)             > 70000
+
+SQL'ish on-demand generator expressions (however still in memory):
+
+>>> [rec['name'] for rec in people if rec['age'] >= 45]                         > ['Sue Jones']
+>>> G = (rec['name'] for rec in people if rec['age'] >= 45); next(G)            > ['Sue Jones']                                 
+
+>>> [(rec['age'] ** 2 if rec['age'] >= 45 else rec['age']) for rec in people]       > [42, 2025]
+>>> G = ((rec['age'] ** 2 if rec['age'] >= 45 else rec['age']) for rec in people)     
+>>> G.__next__()                                                                    > [42, 2025]
+
+* Nested structures
+Incidentally, we could avoid the last-name extraction code in the prior examples by further structuring 
+our records. Because all of Python’s compound datatypes can be nested inside each other and as deeply as 
+we like, we can build up fairly complex information structures easily.
+
+>>> bob2 = {'name': {'first': 'Bob', 'last': 'Smith'},
+	'age': 42,
+	'job': ['software','writing'],
+	'pay': (40000, 50000)}
+                or
+>>> bob3 = dict(name=dict(first='Bob',last='Smith'),
+	age= 42,
+	job=['software','writing'],
+	pay=(40000, 50000))
+
+>>> bob2['name']                    > {'first': 'Bob', 'last': 'Smith'}
+>>> bob2['name']['last']            > 'Smith'
+>>> bob2['pay'][1]                  > 50000
+
+>>> for job in bob2['job']
+        print(job)                  > software
+                                      writing
+
+>>> bob2['job'].append('janitor')
+>>> bob2['job'][-1]                 > 'janitor'
+
+* Dictionaries of dictionaries
+we can use a dictionary of dictionaries — the outer dictionary is the database, and the nested dictionaries 
+are the records within it. Rather than a simple list of records, a dictionary-based database allows us to 
+store and retrieve records by symbolic key. We
+
+>>> db = {}
+>>> db['bob'] = bob
+>>> db['bob2'] = bob2
+>>> db['sue'] = sue
+
+>>> list(db.keys())                 > ['bob', 'sue', 'bob2']
+
+>>> db['bob']['name']               > 'Bob Smith'
+>>> db['sue']['pay']                > 50000
+>>> db['bob2']['job']               > ['software', 'writing', 'janitor']
+
+>>> for key in db:
+        print(key, '=>', db[key]['name'])     > bob => Bob Smith
+                                                sue => Sue Jones
+                                                bob2 => {'first': 'Bob', 'last': 'Smith'}
+
+>>> for r in db.values(): print(rec['pay'])   > 30000
+                                                40000
+                                                (40000, 50000)
+
+>>> x = [db[key]['name'] for key in db]; x       > ['Bob Smith', 'Sue Jones', {'first': 'Bob', 'last': 'Smith'}]
+                or
+>>> x = [rec['name'] for rec in db.values()]; x  > ['Bob Smith', 'Sue Jones', {'first': 'Bob', 'last': 'Smith'}]
+
+Step 1: Storing records persistently
+====================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
