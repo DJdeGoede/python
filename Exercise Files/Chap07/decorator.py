@@ -8,14 +8,14 @@ def elapsed_time(f):
         t1 = time.time()
         f()
         t2 = time.time()
-        print(f'Elapsed time: {(t2 - t1) * 1000} ms')
+        print(f'Elapsed time: {(t2 - t1) } sec')
     return wrapper
 
 
 @elapsed_time
 def big_sum():
     num_list = []
-    for num in (range(0, 10000)):
+    for num in (range(0, 100000000, 2)):
         num_list.append(num)
     print(f'Big sum: {sum(num_list)}')
 

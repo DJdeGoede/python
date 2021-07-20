@@ -2,7 +2,12 @@
 # Copyright 2009-2017 BHG http://bw.org/
 
 def main():
+    # method 1 - direct
     kitten(Buffy = 'meow', Zilla = 'grr', Angel = 'rawr')
+
+    # method 2 - via dict var
+    x = dict(Buffy = 'meow', Zilla = 'grr', Angel = 'rawr')
+    kitten(**x)
 
 def kitten(**kwargs):
     if len(kwargs):
