@@ -9,8 +9,13 @@ def main():
     print_dict(animals)
 
 def print_dict(o):
+    
+    " method 1"
     for x in o: print(f'{x}: {o[x]}')
-    # or
+    
+    print('')
+
+    " method 2"
     for k, v in o.items(): print(f'{k}: {v}')
 
 if __name__ == '__main__': main()
