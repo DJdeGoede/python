@@ -23,7 +23,7 @@ def euclid (*args):
     print(f'[v] Greatest common divisor of {a} and {b} = {n}')
 
 def main():
-    euclid(40)
+    euclid(40,56)
 
 if __name__ == '__main__':
     main()
