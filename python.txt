@@ -10,7 +10,7 @@
 P R O G R A M M I N G   I N   P Y T H O N
 -------------------------------------------
 >>> : command to type,  > : result
-examples can be run in Idle
+examples can be run in Idle 
 -------------------------------------------
 
 Step 1: Representing records
